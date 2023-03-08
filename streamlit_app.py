@@ -36,6 +36,17 @@ def get_fruityvice_data(this_fruit_choice):
 # section to display api response
 streamlit.header('Fruityvice Fruit Advice!')
 
+# snowflake function
+def get_list():
+  with my_cnx.cursor() as my_cur:
+    my_cur.execute("SELECT * FROM fruit_load_list")
+    return my_cur.fetchall()
+  
+if streamlit.button('Get load'):
+  my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+  my_data_rows = get_list()
+  streamlit.dataframe(my_data_rows)
+  
 try:
   fruit_choice = streamlit.text_input('What fruit would you like information about?')
   if not fruit_choice:
@@ -55,9 +66,4 @@ streamlit.text(fruity_response.json())
 
 streamlit.stop()
 
-my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
-my_cur = my_cnx.cursor()
-my_cur.execute("SELECT * FROM fruit_load_list")
-my_data_row = my_cur.fetchone()
-streamlit.text("Fruits:")
-streamlit.text(my_data_row)
+
