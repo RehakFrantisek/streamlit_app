@@ -72,7 +72,13 @@ my_data_rows = my_cur.fetchall()
 streamlit.header("The fruit load list containts")
 streamlit.text("Hello from Snowflake:")
 streamlit.dataframe(my_data_rows)
-
+streamlit.header('What fruit would you like to add?')
+fruit_choice2 = streamlit.text_input('What fruit would you like information about?')
+  if not fruit_choice2:
+    streamlit.error("Select fruit")
+  else:
+    function_value = get_fruityvice_data(fruit_choice2)
+    streamlit.dataframe(function_value)
 
 streamlit.stop()
 
